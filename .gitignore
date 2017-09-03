@@ -39,3 +39,5 @@ T4MVC.cs
 *.iml
 .idea/
 .vs
+/Obfuscator_Output
+/Obfuscator_Input
