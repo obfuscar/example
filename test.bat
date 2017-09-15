@@ -14,4 +14,4 @@ call %msBuildExe% BasicExample.sln /t:restore /p:Configuration=Release
 call %MSBuildExe% BasicExample.sln /p:Configuration=Release /p:OutDir=..\Obfuscator_Input
 
 echo Step 3, execute obfuscation.
-call %userprofile%\.nuget\packages\obfuscar\2.2.8\tools\Obfuscar.Console.exe obfuscar.xml
+call %userprofile%\.nuget\packages\obfuscar\2.2.9\tools\Obfuscar.Console.exe obfuscar.xml
