@@ -95,7 +95,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="test.snk" />
+    <None Include="test.snk">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BasicExampleLibrary\BasicExampleLibrary.csproj">
@@ -117,10 +119,18 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Obfuscar">
-      <Version>2.2.9</Version>
+      <Version>2.2.11</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="obfuscar.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>$(Obfuscar) obfuscar.xml</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
