@@ -9,3 +9,7 @@ This repo uses Visual Studio 2017 to demonstrate how to use Obfuscar 2.2.11.
 2. Use post build even to call Obfuscar with a configuration file (obfuscar.xml) in this case.
 
 The obfuscated assemblies are in the output folder (`.\BasicExampleExe\bin\Debug\Obfuscator_Output` or `.\BasicExampleExe\bin\Release\Obfuscator_Output`).
+
+Obfuscar Source Code can be found at [GitHub](https://github.com/lextm/obfuscar/).
+
+The documentation is hosted at [ReadTheDocs](http://docs.obfuscar.com/).
