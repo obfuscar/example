@@ -13,3 +13,5 @@ The obfuscated assemblies are in the output folder (`.\BasicExampleExe\bin\Debug
 Obfuscar Source Code can be found at [GitHub](https://github.com/lextm/obfuscar/).
 
 The documentation is hosted at [ReadTheDocs](http://docs.obfuscar.com/).
+
+To test the example on macOS or Linux, please refer to https://github.com/obfuscar/example/issues/4.
