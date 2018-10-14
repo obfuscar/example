@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<Obfuscator>
+  <Var name="InPath" value="." />
+  <Var name="OutPath" value=".\Obfuscator_Output" />
+  <Var name="HidePrivateApi" value="true" />
+  <Var name="KeyFile" value=".\test.snk" />
+
+  <Module file="$(InPath)\BasicExampleCon.exe" />
+  <Module file="$(InPath)\BasicExampleLibrary.dll" />
+</Obfuscator>
