@@ -8,7 +8,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>BasicExampleCon</RootNamespace>
     <AssemblyName>BasicExampleCon</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <!-- Target framework bumped to .NET Framework 4.6.2 -->
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -73,18 +74,19 @@
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
   <PropertyGroup>
     <PostBuildEvent>"$(Obfuscar)" obfuscar.generated.xml</PostBuildEvent>
   </PropertyGroup>
 
-  <Target Name="GenerateObfuscarConfig" AfterTargets="Build">
+  <Target Name="GenerateObfuscarConfig" BeforeTargets="PostBuildEvent">
     <PropertyGroup>
       <_ProjectDir>$(MSBuildProjectDirectory)</_ProjectDir>
       <_OutDir>$(OutputPath)</_OutDir>
       <_InPath>$(_ProjectDir)\$(_OutDir)</_InPath>
       <_OutPath>$(_InPath)Obfuscator_Output</_OutPath>
       <_KeyFile>$(_ProjectDir)\test.snk</_KeyFile>
-      <_ConfigFile>$(_ProjectDir)\obfuscar.generated.xml</_ConfigFile>
+      <_ConfigFile>$(_InPath)obfuscar.generated.xml</_ConfigFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -100,10 +102,8 @@
       <_ObfuscarLines Include="&lt;/Obfuscator&gt;" />
     </ItemGroup>
 
+    <Message Importance="high" Text="Generating obfuscar config at: $(_ConfigFile)" />
     <WriteLinesToFile File="$(_ConfigFile)" Overwrite="true" Lines="@(_ObfuscarLines)" />
-
-    <Message Importance="high" Text="Generated obfuscar config: $(_ConfigFile)" />
-
-    <Exec Command='"$(Obfuscar)" "$(_ConfigFile)"' ContinueOnError="false" />
+    <Message Importance="high" Text="Obfuscar config generated successfully" />
   </Target>
 </Project>
