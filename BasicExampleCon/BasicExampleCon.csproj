@@ -64,11 +64,7 @@
       <Name>BasicExampleLibrary</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="obfuscar.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <!-- obfuscar.xml is generated at build time as obfuscar.generated.xml; remove static Content entry -->
   <ItemGroup>
     <PackageReference Include="Obfuscar">
       <Version>2.2.20</Version>
@@ -78,6 +74,36 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(Obfuscar)" obfuscar.xml</PostBuildEvent>
+    <PostBuildEvent>"$(Obfuscar)" obfuscar.generated.xml</PostBuildEvent>
   </PropertyGroup>
+
+  <Target Name="GenerateObfuscarConfig" AfterTargets="Build">
+    <PropertyGroup>
+      <_ProjectDir>$(MSBuildProjectDirectory)</_ProjectDir>
+      <_OutDir>$(OutputPath)</_OutDir>
+      <_InPath>$(_ProjectDir)\$(_OutDir)</_InPath>
+      <_OutPath>$(_InPath)Obfuscator_Output</_OutPath>
+      <_KeyFile>$(_ProjectDir)\test.snk</_KeyFile>
+      <_ConfigFile>$(_ProjectDir)\obfuscar.generated.xml</_ConfigFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ObfuscarLines Include="&lt;?xml version='1.0'?&gt;" />
+      <_ObfuscarLines Include="&lt;Obfuscator&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='InPath' value='$(_InPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='OutPath' value='$(_OutPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='HidePrivateApi' value='true' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='KeyFile' value='$(_KeyFile)' /&gt;" />
+      <_ObfuscarLines Include=" " />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleCon.exe' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleLibrary.dll' /&gt;" />
+      <_ObfuscarLines Include="&lt;/Obfuscator&gt;" />
+    </ItemGroup>
+
+    <WriteLinesToFile File="$(_ConfigFile)" Overwrite="true" Lines="@(_ObfuscarLines)" />
+
+    <Message Importance="high" Text="Generated obfuscar config: $(_ConfigFile)" />
+
+    <Exec Command='"$(Obfuscar)" "$(_ConfigFile)"' ContinueOnError="false" />
+  </Target>
 </Project>

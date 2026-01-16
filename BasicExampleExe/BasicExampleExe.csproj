@@ -128,15 +128,41 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="obfuscar.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
+  <!-- obfuscar.xml is generated at build time as obfuscar.generated.xml; remove static Content entry -->
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(Obfuscar)" obfuscar.xml</PostBuildEvent>
+    <PostBuildEvent>"$(Obfuscar)" obfuscar.generated.xml</PostBuildEvent>
   </PropertyGroup>
+
+  <Target Name="GenerateObfuscarConfig" AfterTargets="Build">
+    <PropertyGroup>
+      <_ProjectDir>$(MSBuildProjectDirectory)</_ProjectDir>
+      <_OutDir>$(OutputPath)</_OutDir>
+      <_InPath>$(_ProjectDir)\$(_OutDir)</_InPath>
+      <_OutPath>$(_InPath)Obfuscator_Output</_OutPath>
+      <_KeyFile>$(_ProjectDir)\test.snk</_KeyFile>
+      <_ConfigFile>$(_ProjectDir)\obfuscar.generated.xml</_ConfigFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ObfuscarLines Include="&lt;?xml version='1.0'?&gt;" />
+      <_ObfuscarLines Include="&lt;Obfuscator&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='InPath' value='$(_InPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='OutPath' value='$(_OutPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='HidePrivateApi' value='true' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='KeyFile' value='$(_KeyFile)' /&gt;" />
+      <_ObfuscarLines Include=" " />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleExe.exe' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleLibrary.dll' /&gt;" />
+      <_ObfuscarLines Include="&lt;/Obfuscator&gt;" />
+    </ItemGroup>
+
+    <WriteLinesToFile File="$(_ConfigFile)" Overwrite="true" Lines="@(_ObfuscarLines)" />
+
+    <Message Importance="high" Text="Generated obfuscar config: $(_ConfigFile)" />
+
+    <Exec Command='"$(Obfuscar)" "$(_ConfigFile)"' ContinueOnError="false" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
