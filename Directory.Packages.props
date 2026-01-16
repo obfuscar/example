@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ItemGroup>
+    <!-- Central package versions for the example submodule -->
+    <PackageVersion Include="Obfuscar" Version="2.2.50" />
+  </ItemGroup>
+</Project>

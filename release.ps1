@@ -55,11 +55,7 @@ catch
 
 Write-Host "MSBuild found. Compile the projects."
 
-$logFile = "build.log"
-& $msBuild BasicExample.sln /t:restore /p:Configuration=Release /v:diag /flp:logfile=$logFile`;verbosity=diagnostic
-& $msBuild BasicExample.sln /p:Configuration=Release /v:diag /flp:logfile=$logFile`;verbosity=diagnostic`;append=true /p:RunPostBuildEvent=OnBuildSuccess
+& $msBuild BasicExample.sln /t:restore /p:Configuration=Release
+& $msBuild BasicExample.sln /p:Configuration=Release
 
-Write-Host "Compilation finished. Full log written to $logFile"
-Write-Host ""
-Write-Host "Last 50 lines of build log:"
-Get-Content $logFile -Tail 50
+Write-Host "Compilation finished."
