@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\BasicExampleExe\ExampleUI.cs">
+      <Link>ExampleUI.cs</Link>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="..\BasicExampleExe\ExampleUI.Designer.cs">
+      <Link>ExampleUI.Designer.cs</Link>
+      <DependentUpon>ExampleUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="..\BasicExampleExe\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\BasicExampleExe\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <EmbeddedResource Include="..\BasicExampleExe\ExampleUI.resx">
+      <Link>ExampleUI.resx</Link>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="..\BasicExampleExe\test.snk">
+      <Link>test.snk</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <ProjectReference Include="..\BasicExampleLibraryNet10\BasicExampleLibraryNet10.csproj" />
+  </ItemGroup>
+
+  <Target Name="GenerateObfuscarConfig" BeforeTargets="PostBuildEvent;PostBuild">
+    <PropertyGroup>
+      <_ProjectDir>$(MSBuildProjectDirectory)\</_ProjectDir>
+      <_OutDir>$(OutputPath)</_OutDir>
+      <_InPath>$(_ProjectDir)$(_OutDir)</_InPath>
+      <_OutPath>$(_InPath)Obfuscator_Output</_OutPath>
+      <_KeyFile>$(_InPath)test.snk</_KeyFile>
+      <_ConfigFile>$(_InPath)obfuscar.generated.xml</_ConfigFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ObfuscarLines Include="&lt;?xml version='1.0'?&gt;" />
+      <_ObfuscarLines Include="&lt;Obfuscator&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='InPath' value='$(_InPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='OutPath' value='$(_OutPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='HidePrivateApi' value='true' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='KeyFile' value='$(_KeyFile)' /&gt;" />
+      <_ObfuscarLines Include=" " />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)$(AssemblyName)$(TargetExt)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleLibraryNet10.dll' /&gt;" />
+      <_ObfuscarLines Include="&lt;/Obfuscator&gt;" />
+    </ItemGroup>
+
+    <WriteLinesToFile File="$(_ConfigFile)" Overwrite="true" Lines="@(_ObfuscarLines)" />
+    <Message Importance="high" Text="Obfuscar config generated successfully at: $(_ConfigFile)" />
+  </Target>
+
+  <Target Name="RunObfuscar" AfterTargets="Build">
+    <Exec Command="dotnet tool run obfuscar.console $(_InPath)obfuscar.generated.xml" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+</Project>

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\BasicExampleLibrary\test.snk</AssemblyOriginatorKeyFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\BasicExampleLibrary\ClassX.cs">
+      <Link>ClassX.cs</Link>
+    </Compile>
+    <Compile Include="..\BasicExampleLibrary\NonInternalOverride.cs">
+      <Link>NonInternalOverride.cs</Link>
+    </Compile>
+    <Compile Include="..\BasicExampleLibrary\TestClasses.cs">
+      <Link>TestClasses.cs</Link>
+    </Compile>
+    <Compile Include="..\BasicExampleLibrary\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <None Include="..\BasicExampleLibrary\test.snk">
+      <Link>test.snk</Link>
+    </None>
+  </ItemGroup>
+</Project>

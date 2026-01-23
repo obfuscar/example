@@ -1,0 +1,55 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\BasicExampleCon\Program.cs">
+      <Link>Program.cs</Link>
+    </Compile>
+    <Compile Include="..\BasicExampleCon\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <None Include="..\BasicExampleCon\test.snk">
+      <Link>test.snk</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <ProjectReference Include="..\BasicExampleLibraryNet10\BasicExampleLibraryNet10.csproj" />
+  </ItemGroup>
+
+  <Target Name="GenerateObfuscarConfig" BeforeTargets="PostBuildEvent;PostBuild">
+    <PropertyGroup>
+      <_ProjectDir>$(MSBuildProjectDirectory)\</_ProjectDir>
+      <_OutDir>$(OutputPath)</_OutDir>
+      <_InPath>$(_ProjectDir)$(_OutDir)</_InPath>
+      <_OutPath>$(_InPath)Obfuscator_Output</_OutPath>
+      <_KeyFile>$(_InPath)test.snk</_KeyFile>
+      <_ConfigFile>$(_InPath)obfuscar.generated.xml</_ConfigFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <_ObfuscarLines Include="&lt;?xml version='1.0'?&gt;" />
+      <_ObfuscarLines Include="&lt;Obfuscator&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='InPath' value='$(_InPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='OutPath' value='$(_OutPath)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='HidePrivateApi' value='true' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Var name='KeyFile' value='$(_KeyFile)' /&gt;" />
+      <_ObfuscarLines Include=" " />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)$(AssemblyName)$(TargetExt)' /&gt;" />
+      <_ObfuscarLines Include="  &lt;Module file='$(_InPath)BasicExampleLibraryNet10.dll' /&gt;" />
+      <_ObfuscarLines Include="&lt;/Obfuscator&gt;" />
+    </ItemGroup>
+
+    <Message Importance="high" Text="Generating obfuscar config at: $(_ConfigFile)" />
+    <WriteLinesToFile File="$(_ConfigFile)" Overwrite="true" Lines="@(_ObfuscarLines)" />
+    <Message Importance="high" Text="Obfuscar config generated successfully" />
+  </Target>
+
+  <Target Name="RunObfuscar" AfterTargets="Build">
+    <Exec Command="dotnet tool run obfuscar.console $(_InPath)obfuscar.generated.xml" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+</Project>

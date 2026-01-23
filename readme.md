@@ -1,9 +1,10 @@
-Obfuscar Example Repository
-===========================
+# Obfuscar Example Repository
 
 [![Build status](https://img.shields.io/appveyor/ci/lextm/obfuscar-example/master.svg?label=appveyor&style=flat-square)](https://ci.appveyor.com/project/lextm/obfuscar-example)
 
-This repo uses Visual Studio to demonstrate how to use Obfuscar for .NET Framework release 2.2.
+This repo uses Visual Studio to demonstrate
+
+## How to use Obfuscar for .NET Framework
 
 1. Add a NuGet package to your final project (BasiExampleExe in this case).
 2. Use post build event to call Obfuscar with a XML configuration file.
@@ -12,10 +13,19 @@ Note: The example projects now generate an absolute-path Obfuscar configuration 
 
 The obfuscated assemblies are in the output folder (`.\BasicExampleExe\bin\Debug\Obfuscator_Output` or `.\BasicExampleExe\bin\Release\Obfuscator_Output`).
 
-Note that
+> Note that the NuGet package used in this example is packed for .NET Framework assemblies.
 
-* The NuGet package used in this example is packed for .NET Framework assemblies.
-* **If you are working on .NET/.NET Core/.NET Standard assemblies, please [use Obfuscar Global Tool build for .NET](https://docs.lextudio.com/obfuscar/getting-started/basics#net-core-global-tools).**
+## How to use Obfuscar for .NET/.NET Core/.NET Standard assemblies
+
+1. Install Obfuscar as a .NET Global Tool by running the following command in your terminal:
+
+   ```bash
+   dotnet tool install -g obfuscar.console
+   ```
+
+2. Add a post build event to your final project (BasiExampleExe in this case) to call Obfuscar with a XML configuration file.
+
+> More information about [Obfuscar Global Tool build for .NET](https://docs.lextudio.com/obfuscar/getting-started/basics#net-core-global-tools) can be found in the documentation.
 
 Obfuscar Source Code can be found at [GitHub](https://github.com/obfuscar/obfuscar/).
 

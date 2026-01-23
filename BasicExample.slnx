@@ -1,0 +1,8 @@
+<Solution>
+  <Project Path="BasicExampleCon/BasicExampleCon.csproj" Condition="'$(OS)' == 'Windows_NT'" />
+  <Project Path="BasicExampleExe/BasicExampleExe.csproj" Condition="'$(OS)' == 'Windows_NT'" />
+  <Project Path="BasicExampleLibrary/BasicExampleLibrary.csproj" Condition="'$(OS)' == 'Windows_NT'" />
+  <Project Path="BasicExampleConNet10/BasicExampleConNet10.csproj" />
+  <Project Path="BasicExampleExeNet10/BasicExampleExeNet10.csproj" />
+  <Project Path="BasicExampleLibraryNet10/BasicExampleLibraryNet10.csproj" />
+</Solution>
