@@ -15,7 +15,7 @@ The obfuscated assemblies are in the output folder (`.\BasicExampleExe\bin\Debug
 
 > Note that the NuGet package used in this example is packed for .NET Framework assemblies.
 
-## How to use Obfuscar for .NET/.NET Core/.NET Standard assemblies
+## How to use Obfuscar for .NET/.NET Standard assemblies
 
 1. Install Obfuscar as a .NET Global Tool by running the following command in your terminal:
 
