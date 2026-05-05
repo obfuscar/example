@@ -55,7 +55,7 @@ catch
 
 Write-Host "MSBuild found. Compile the projects."
 
-& $msBuild BasicExample.sln /t:restore /p:Configuration=Release
-& $msBuild BasicExample.sln /p:Configuration=Release
+& $msBuild BasicExample.slnx /t:restore /p:Configuration=Release
+& $msBuild BasicExample.slnx /p:Configuration=Release
 
 Write-Host "Compilation finished."
