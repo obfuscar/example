@@ -2,6 +2,6 @@
 <Project>
   <ItemGroup>
     <!-- Central package versions for the example submodule -->
-    <PackageVersion Include="Obfuscar" Version="2.2.50" />
+    <PackageVersion Include="Obfuscar" Version="3.0.0-beta.13" />
   </ItemGroup>
 </Project>
